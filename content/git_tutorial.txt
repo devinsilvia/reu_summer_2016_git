@@ -131,9 +131,19 @@ previous commit and then "checkout" the version of that code.
 $ git checkout [first 6 digits of revision number] not_just_a_dummy_file.txt
 (Note:  the first  6 digits of  the revision number are in the "git log" file)
 
-Git tells us that we are in a detached HEAD state, meaning that we are at a previous version of the repository, specifically the version we requested. It also provides useful information about what we can do from here. Take a look at not_just_a_dummy_file.txt. It should look like the version you committed before you made your change.
+Git tells us that we are in a detached HEAD state, meaning that we are
+at a previous version of the repository, specifically the version we
+requested. It also provides useful information about what we can do
+from here. Take a look at not_just_a_dummy_file.txt. It should look
+like the version you committed before you made your change.
 
-It is important to  keep in mind that we have moved  to a past version of the code, if  we were to make a change now and  commit it, we would be changing that old version and the commit process would create a new "HEAD" of sorts. We could then later save this code development as a new branch, if we wanted. You’ll learn more about heads as you work with repositories more, but for now let's just get back to the  most current version of the code:
+It is important to keep in mind that we have moved to a past version
+of the code, if we were to make a change now and commit it, we would
+be changing that old version and the commit process would create a new
+"HEAD" of sorts. We could then later save this code development as a
+new branch, if we wanted. You’ll learn more about heads as you work
+with repositories more, but for now let's just get back to the most
+current version of the code:
 
 $ git checkout master
 
@@ -159,7 +169,10 @@ need to "revert" the file to the state it was in at our last commit:
 $ git checkout -- not_just_a_dummy_file.txt
 $ git status
 
-Now we see that we still have the added file and not_just_a_dummy_file.txt is no longer marked as "modified". If we're happy  with the current state of our repo, we can go ahead and commit again:
+Now we see that we still have the added file and
+not_just_a_dummy_file.txt is no longer marked as "modified". If we're
+happy with the current state of our repo, we can go ahead and commit
+again:
 
 $ git commit -a
 
@@ -170,7 +183,10 @@ dummy_file.txt.  We could try doing:
 $ rm dummy_file.txt
 $ git status
 
-Uh oh, dummy_file.txt is now marked with as "deleted". This indicates that the file was deleted, but not with a git command, so it is still being tracked. We need to actually properly deleted the file and then commit the change using "git rm":
+Uh oh, dummy_file.txt is now marked with as "deleted". This indicates
+that the file was deleted, but not with a git command, so it is still
+being tracked. We need to actually properly deleted the file and then
+commit the change using "git rm":
 
 $ git rm dummy_file.txt
 $ git commit -a
@@ -186,7 +202,7 @@ Now  we’re   going  to  clone   a  repository  that   already  existed
 remotely. To  do this, create  a directory somewhere on  your computer
 where you’re OK with putting the repository and then do the following:
 
-$ git clone https://bitbucket.org/devinsilvia/reu_summer_2016_git
+$ git clone https://github.com/devinsilvia/reu_summer_2016_git
 
 If you  were to  go to  that URL,  you would  see the  repository that
 already  exists  and  you  should  see  that  the  properties  of  the
@@ -194,10 +210,21 @@ repository  match the  one that  was just  cloned.  The  clone command
 downloads a  copy of  the current state  of the repo,  as well  as its
 history, from GitHub.
 
-Once you've  cloned a repository,  you can make  changes to it  in the
-exact same way that we outline  in Part 1.  However, making changes to
-the version hosted  on GitHub is a little bit  different. Let's see
-how that works.
+Before we move on, we're going to set up a couple of git config
+options to ensure that git knows who we are by specifying our name and
+email address:
+
+$ git config --global user.name "Your Name"
+$ git config --global user.email youraddress@emailserver
+
+Those will set a global user name and email on your machine, but you
+can also set them for specific repositories by running the command
+without "--global" in a repository that lives on your machine.
+
+Now that you've cloned a repository, you can make changes to it in the
+exact same way that we outline in Part 1.  However, making changes to
+the version hosted on GitHub is a little bit different. Let's see how
+that works.
 
 Starting from the root directory of the repository:
 
@@ -227,17 +254,18 @@ Let's push that change:
 
 $ git push
 
-Git should prompt you for your GitHub password, once you enter it,
-the file you created will be pushed up to the class repo. If this goes
-through with  out an  error, check that  your file is  now on  the web
-version repo and jump down to "Pulling new changes:" below.
+Git should prompt you for your GitHub username and password, once you
+enter it, the file you created will be pushed up to the class repo. If
+this goes through with out an error, check that your file is now on
+the web version repo and jump down to "Pulling new changes:" below.
 
 Otherwise...
 
-If you  are not the first  person to push a  new file, you may  get an
-"abort" message saying that your push  will create a new head. This is
-normal and part  of collaborative repository development.   If you get
-his message skip down to "If you get an 'abort' message:" below.
+If you are not the first person to push a new file, you may get an
+"rejected" message saying that there are other changes on the remote
+repository. This is normal and part of collaborative repository
+development. If you get his message skip down to "If you get an
+'rejected' message:" below.
 
 >>> Pulling new changes:
 
@@ -249,19 +277,23 @@ Assuming other's have pushed files, let's pull:
 
 $ git pull
 
-It important to realize that "git  pull" does not actually change your
-local version of the repository,  it merely acquires information as to
-the list of  changes that have been made.  If  you want to incorporate
-those changes, you have to "update" the repo:
+It important to realize that for earlier versions of git, "git pull"
+does not actually change your local version of the repository, it
+merely acquires information as to the list of changes that have been
+made.  If you want to incorporate those changes, you have to "update"
+the repo with the fetch command:
 
 $ git fetch
+
+If you have the 2.0+ version of git, this will automatically update
+your repository.
 
 You  should now  see  other student  directories  in the  “vc_testing”
 folder as  well as their  version of push_test.txt.  Read  through the
 following section to understand what would have happened if you hadn't
 been the first student to push your changes.
 
->>> If you get an 'abort' message:
+>>> If you get an 'rejected' message:
 
 Now, what happens if you're  currently working on a repository, you've
 made a commit, but someone else was simultaneously working on the same
@@ -275,10 +307,12 @@ So, let's do that:
 
 $ git pull
 
-Git will pull the  changes and let you know that  you've pulled down a
-new "head".   This is a result  of changes that other  students in the
-class have  made.  We  need to merge  that head into  our own  so that
-we're all working with the same repo:
+Git will pull the changes and let you know that you've pulled down a
+new "master".  This is a result of changes that other students in the
+class have made.  The 2.0+ version of git will automatically initiate
+a merge and give you the opportunity to create a unique merge command,
+if you want.  You can simply saved the default message in this case.
+For older versions of git, you'll need to do the merge manually:
 
 $ git merge
 
@@ -289,9 +323,9 @@ commits involved merges, it is relatively common practice to include a
 commit message that says "Merged." or "Merging changes."
 
 Do that commit now and don't forget to push your merge!  (Warning: you
-may run into further "abort" messages since we're all actively pushing
-changes, just  repeat the above  process until everything  gets merged
-in.)
+may run into further "rejected" messages since we're all actively
+pushing changes, just repeat the above process until everything gets
+merged in.)
 
 
 At this point,  you should have a decent understanding  of how to push
